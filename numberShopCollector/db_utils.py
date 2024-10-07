@@ -30,15 +30,18 @@ class PostgresDB:
         return self.cursor.fetchall()
 
     def update_mobile_numbers(self, mobile_number, shop_status):
-        """
-        Update the shop_status in mobile_numbers table based on mobile_number.
-        """
-        query = sql.SQL("""
-            UPDATE mobile_numbers
-            SET shop_status = %s
-            WHERE number = %s
-        """)
-        self.cursor.execute(query, (shop_status, mobile_number))
+    """
+    Update the shop_status in mobile_numbers table based on mobile_number.
+    Set is_active to False if shop_status is 0.
+    """
+    query = sql.SQL("""
+        UPDATE mobile_numbers
+        SET shop_status = %s,
+            is_active = CASE WHEN %s = 0 THEN FALSE ELSE is_active END
+        WHERE number = %s
+    """)
+    self.cursor.execute(query, (shop_status, shop_status, mobile_number))
+
 
     def mark_shop_result_processed(self, result_id, is_new=False, status_change=False):
         """
