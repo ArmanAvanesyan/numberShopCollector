@@ -43,7 +43,7 @@ class PostgresDB:
     self.cursor.execute(query, (shop_status, shop_status, mobile_number))
 
 
-    def mark_shop_result_processed(self, result_id, is_new=False, status_change=False):
+       def mark_shop_result_processed(self, result_id, is_new=False, status_change=False):
         """
         Mark the shop_result as processed by setting is_new and status_change flags.
         """
